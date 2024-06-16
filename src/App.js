@@ -37,12 +37,23 @@ const App = () => {
       setError("Something didn't work please try again.");
     }
   }
-  const analyzeImage = () => {
+  const analyzeImage = async () => {
+    setResponse("")
     if(!image){
       setError("Error! Must have an existing image!")
       return
     }
     try{
+      const options = {
+        method:"POST",
+        body: JSON.stringify({
+          message:value
+        }),
+        headers: {
+          "Content-Type":"application/json"
+        }
+      }
+      const response = await fetch("http://localhost:8000/openai",options)
 
     }catch(err){
       console.log(err)
@@ -81,7 +92,7 @@ const App = () => {
         placeholder="What is in the image..."
         onChange = {e => setValue(e.target.value)}
         />
-        {(!response && !error) && <button onClick={analyzeImage}>ASk me</button>}
+        {(!response && !error) && <button onClick={analyzeImage}>Ask me</button>}
         {(response && error) && <button onClick={clear}>Clear</button>}
       </div>
       {error && <p>{error}</p>}
